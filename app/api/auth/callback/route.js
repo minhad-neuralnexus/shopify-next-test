@@ -1,4 +1,4 @@
-import shopify from "../../../lib/shopify";
+import shopify from "../../../../lib/shopify";
 
 export async function GET(request) {
   const url = new URL(request.url);
