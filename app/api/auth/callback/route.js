@@ -11,8 +11,7 @@ export async function GET(request) {
 
   await shopify.auth.callback({
     rawRequest: request,
-    rawResponse: new Response(), // Dummy; not used in your edge function
   });
 
-  return Response.redirect(`/?shop=${shop}&host=${host}`, 302);
+  // return Response.redirect(`/?shop=${shop}&host=${host}`, 302);
 }
