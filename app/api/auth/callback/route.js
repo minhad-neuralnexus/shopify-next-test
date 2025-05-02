@@ -9,9 +9,11 @@ export async function GET(request) {
     return new Response("Missing required parameters", { status: 400 });
   }
 
-  await shopify.auth.callback({
+  const callback = await shopify.auth.callback({
     rawRequest: request,
   });
+
+  console.log(callback);
 
   // return Response.redirect(`/?shop=${shop}&host=${host}`, 302);
 }
