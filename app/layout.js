@@ -7,15 +7,16 @@ import Head from "next/head";
 import { createContext, useMemo } from "react";
 import createApp from "@shopify/app-bridge";
 
-// Create and export context if needed later
 export const AppBridgeContext = createContext(null);
 
 export default function RootLayout({ children }) {
-  if (typeof window === "undefined") return null;
-
-  const host = new URLSearchParams(window.location.search).get("host");
+  const host =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("host")
+      : null;
 
   const config = useMemo(() => {
+    if (!host) return null;
     return {
       apiKey: process.env.NEXT_PUBLIC_SHOPIFY_API_KEY,
       host,
@@ -23,7 +24,12 @@ export default function RootLayout({ children }) {
     };
   }, [host]);
 
-  const app = useMemo(() => createApp(config), [config]);
+  const app = useMemo(() => {
+    if (!config) return null;
+    return createApp(config);
+  }, [config]);
+
+  if (!host || !config || !app) return null; // render nothing on SSR
 
   return (
     <html lang="en">
