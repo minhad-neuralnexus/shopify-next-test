@@ -1,4 +1,4 @@
-import shopify from "../../../lib/shopify";
+import shopify from "../../../../lib/shopify";
 
 export async function GET(request) {
   const callback = await shopify.auth.callback(request);
