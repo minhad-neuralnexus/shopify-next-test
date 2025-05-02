@@ -9,11 +9,10 @@ export async function GET(request) {
     return new Response("Missing required parameters", { status: 400 });
   }
 
-  const callback = await shopify.auth.callback({
+  await shopify.auth.callback({
     rawRequest: request,
+    rawResponse: new Response(), // Dummy; not used in your edge function
   });
 
-  console.log(callback);
-
-  // return Response.redirect(`/?shop=${shop}&host=${host}`, 302);
+  return Response.redirect(`/embed?shop=${shop}&host=${host}`, request.url);
 }
