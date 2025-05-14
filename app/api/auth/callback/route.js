@@ -1,18 +1,18 @@
-import shopify from "../../../../lib/shopify";
+import { NextResponse } from "next/server";
+import shopify from "@/lib/shopify";
 
-export async function GET(request) {
-  const url = new URL(request.url);
-  const shop = url.searchParams.get("shop");
-  const host = url.searchParams.get("host");
+// callback
+export async function GET(req) {
+  try {
+    const session = await shopify.auth.callback({
+      rawRequest: req,
+    });
 
-  if (!shop || !host) {
-    return new Response("Missing required parameters", { status: 400 });
+    const redirectUrl = `https://eb3b-2405-201-601c-583b-b08c-ec91-4768-41cd.ngrok-free.app/?shop=${session.session.shop}`;
+
+    return Response.redirect(redirectUrl, 302);
+  } catch (error) {
+    console.log(error);
+    return Response.redirect(redirectUrl, 302);
   }
-
-  await shopify.auth.callback({
-    rawRequest: request,
-    rawResponse: new Response(), // Dummy; not used in your edge function
-  });
-
-  return Response.redirect(`/embed?shop=${shop}&host=${host}`, request.url);
 }
