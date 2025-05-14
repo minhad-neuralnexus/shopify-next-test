@@ -1,13 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 
 export default function Home() {
-  const searchParams = useSearchParams();
-
   useEffect(() => {
-    const host = searchParams.get("host");
+    const params = new URLSearchParams(window.location.search);
+    const host = params.get("host");
     const apiKey = "3cd4c8cc30f03b3c7dc9156d85486352";
 
     if (window.appBridge && host) {
@@ -22,7 +20,7 @@ export default function Home() {
         "/products"
       );
     }
-  }, [searchParams]);
+  }, []);
 
   const handleClick = () => {
     console.log("req");
@@ -33,7 +31,7 @@ export default function Home() {
       <h1 className="text-2xl font-bold mb-4">Shopify App with Script Embed</h1>
       <p>App Bridge loaded from Shopify CDN!</p>
       <button
-        className="px-3 py-2 bg:blue-500 text-black"
+        className="px-3 py-2 bg-blue-500 text-white"
         onClick={handleClick}
       >
         Click Me
